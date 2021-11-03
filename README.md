@@ -10,7 +10,7 @@
   <br>
 <sub><b><i>Help the detection for manual code review or with CI/CD pipelines</i></b></sub>
   <br>
-[<a href="https://github.com/ariary/Readme-Like-Button/issues/new?assignees=&labels=like&template=like.yml&title=Add+new+like%21">♞</a>]
+[<a href="https://github.com/ariary/TrojanSourceFinder#detect-trojan-source">♞</a>]
 
 
 
@@ -20,7 +20,7 @@
   <br>
 <sub><b><i>Visualize how the code is really interpreted by machines/compiler </i></b></sub>
   <br>
-[<a href="https://github.com/ariary/Readme-Like-Button/issues/new?assignees=&labels=like&template=like.yml&title=Add+new+like%21">👹</a>]
+[<a href="https://github.com/ariary/TrojanSourceFinder#visualize-trojan-source">👹</a>]
 
 </td>
 </tr>
@@ -32,3 +32,4 @@
 ## Detect Trojan Source
 
 ## Visualize Trojan Source
+### Alternatives
