@@ -57,7 +57,7 @@ var ExplicitDirectionalIsolateDict = map[rune]string{
 // }
 
 // ContainBidirectionnal reports whether the byte contains  bidirectionnal character as defined
-// by Unicode's bidirectional algorithm property2; this could lead to Trojan Source vulnerability
+// by Unicode's bidirectional algorithm property; this could lead to Trojan Source vulnerability
 func ContainBidirectionnal(b []byte) bool {
 	var p bidi.Paragraph
 	p.SetBytes(b)

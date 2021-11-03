@@ -11,6 +11,7 @@ import (
 	"unsafe"
 
 	"github.com/ariary/TrojanSourceFinder/pkg/bidirectionnal"
+	"github.com/spf13/cobra"
 	"golang.org/x/text/unicode/bidi"
 )
 
@@ -59,5 +60,51 @@ func Example_is() {
 }
 
 func main() {
+	//CMD SCAN
+	var recursive bool
+
+	var cmdScan = &cobra.Command{
+		Use:   "scan [filename/folder name]",
+		Short: "Scan for Unicode Bidirectionnal characters within files",
+		Long:  `Scan for Unicode Bidirectionnal characters within files as defined by Unicode's bidirectional algorithm property; this could lead to Trojan Source vulnerability`,
+		Args:  cobra.MinimumNArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+
+			name := args[0]
+
+			if recursive {
+				//scan all files
+			} else {
+				//scan 1 file
+			}
+
+		},
+	}
+
+	//flag handling
+	cmdScan.PersistentFlags().BoolVarP(&recursive, "recursive", "r", false, "scan all the files in the specified folder")
+
+	//CMD EXORCISED
+
+	var cmdExorcised = &cobra.Command{
+		Use:   "exorcised [filename]",
+		Short: "Print file without unicode bidirectionnal Algorithm",
+		Long:  `print file without following unicode bidirectionnal Algorithm. It also print Unicode Bidirectionnal Character code point within text to help visualize where the direction changes happen.`,
+		Args:  cobra.MinimumNArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+
+			file := args[0]
+
+			//bidirectionnalExorcisedPrint(file)
+
+		},
+	}
+	var rootCmd = &cobra.Command{
+		Use:   "tsFinder",
+		Short: "Detect Trojan Source Vulnerability in your code",
+	}
+	rootCmd.AddCommand(cmdScan)
+	rootCmd.AddCommand(cmdExorcised)
+	rootCmd.Execute()
 	Example_is()
 }
