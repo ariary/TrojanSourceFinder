@@ -4,22 +4,23 @@
 <table>
 <tr>
 <td>
+  <p align="center">
   <b>Detect evil </b>
   <br>
 <sub><b><i>Help the detection for manual code review or with CI/CD pipelines</i></b></sub>
   <br>
 [<a href="https://github.com/ariary/TrojanSourceFinder#detect-trojan-source">♞</a>]
+  </p>
 
 
-
-<hr size=15px color="ff5733" width=70%>
-
+<hr align="center" size=15px color="ff5733" width="70%" >
+  <p align="center">
   <b>Track evil</b>
   <br>
 <sub><b><i>Visualize how the code is really interpreted by machines/compiler </i></b></sub>
   <br>
 [<a href="https://github.com/ariary/TrojanSourceFinder#visualize-trojan-source">👹</a>]
-
+  </p>
 </td>
 </tr>
 </table>
