@@ -1,8 +1,6 @@
-
-**TrojanSourceFinder helps developers detect "Trojan Source" vulnerability in source code.**
-
 <div align=center>
-
+  <h5><b>TrojanSourceFinder helps developers detect "Trojan Source" vulnerability in source code.</b></h5>
+  
 <table>
 <tr>
 <td>
