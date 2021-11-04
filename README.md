@@ -16,7 +16,19 @@
 ## Detect Trojan Source
 *> Help the detection of Trojan source for manual code review or with CI/CD pipelines*
 
+To detect Trojan source in file *\<filename\>*:
+```shell
+tsFinder <filename>
+```
+
+*tsFinder* is deliberately not very verbose. By default, it will only output if Trojan Source code has been detected. To have more verbosity add the flag `-v`
+
 ## Visualize Trojan Source
 *> Visualize how the code is really interpreted by machines/compiler*
+
+To see where the Trojan Source vulnerability could arise and how it is really interpreted use the flage `-exorcise`:
+```shell
+tsFinder -exorcise <filename>
+```
 
 ### Alternatives
