@@ -5,7 +5,7 @@
 package main
 
 import (
-	"github.com/ariary/TrojanSourceFinder/pkg/bidirectionnal"
+	"github.com/ariary/TrojanSourceFinder/pkg/bidirectional"
 	"github.com/spf13/cobra"
 )
 
@@ -56,7 +56,6 @@ import (
 func main() {
 	//CMD SCAN
 	var recursive bool
-	var exorcise bool
 	var verbose bool
 
 	var rootCmd = &cobra.Command{
@@ -67,13 +66,12 @@ func main() {
 
 			name := args[0]
 
-			bidirectionnal.Scan(name, recursive, exorcise, verbose)
+			bidirectional.Scan(name, recursive, verbose)
 		},
 	}
 
 	//flag handling
 	rootCmd.PersistentFlags().BoolVarP(&recursive, "recursive", "r", false, "scan all the files in the specified folder")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "make tsFinder more verbose")
-	rootCmd.PersistentFlags().BoolVarP(&exorcise, "exorcise", "e", false, "print file without unicode bidirectionnal Algorithm")
 	rootCmd.Execute()
 }
