@@ -92,6 +92,30 @@ func ContainBidirectionnal(b []byte) (detected bool, ord bidi.Ordering) {
 	return false, ord
 }
 
+// Return the line contains within runes of bidi.Ordering object without dealing  w/
+// reordering bidirectional characters
+func getEvilLine(ord bidi.Ordering) (msg string) {
+	//Reconstruct Ordering.directions as it is a private fields
+	rOrd := reflect.ValueOf(ord)
+	rRunes := rOrd.FieldByName("runes")
+	var rs []rune                       //will contain all concated runes
+	for i := 1; i < rRunes.Len(); i++ { // check if we have the same directions for all runes, In fact we could just test if len > 1
+		rRunesSlice := rRunes.Index(i)
+		for j := 0; j < rRunesSlice.Len(); j++ { //does not find other way to reconstruc string
+			r := rune(reflect.ValueOf(rRunesSlice.Index(j).Int()).Int())
+			rs = append(rs, r)
+		}
+	}
+	msg = string(rs)
+	return msg
+}
+
+// Return the line contains within runes of bidi.Ordering object and reorder
+// bidirectional characters
+func getExorcisedLine(ord bidi.Ordering) (msg string) {
+	return msg
+}
+
 // Scan file or folder to detect potential Trojan Source vulnerability within.
 // recursive: scan folder; exorcised: print out the vulnerability detected
 func Scan(filename string, recursive bool, exorcise bool, verbose bool) {
@@ -126,9 +150,16 @@ func Scan(filename string, recursive bool, exorcise bool, verbose bool) {
 
 	//REPORT
 	if detected {
-		ErrorLogger.Println("detect trojan source in", filename, ":")
-		if verbose {
-			InfoLogger.Printf("%+v", vulns)
+		ErrorLogger.Println("check", filename, "... not ok")
+		for line, ord := range vulns {
+			if verbose {
+				msg := getEvilLine(ord)
+				InfoLogger.Println(line, ": ", msg)
+			}
+			if exorcise {
+				msg := getExorcisedLine(ord)
+				InfoLogger.Println(line, ": ", msg)
+			}
 		}
 	} else {
 		InfoLogger.Println("check", filename, "... ok")
