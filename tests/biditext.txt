@@ -1,0 +1,7 @@
+العاشر ليونيكود (Unicode Conference)، الذي سيعقد في 10-12 آذار 1997 مبدينة`
+"العاشر ليونيكود ("
+"Unicode Conference"
+{")، الذي سيعقد في "
+" آذار "
+"The names of these states in Arabic are \u2067"
+`Uا`

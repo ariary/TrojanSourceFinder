@@ -1,10 +1,24 @@
 package bidirectionnal
 
 import (
+	"bufio"
+	"log"
+	"os"
 	"reflect"
 
 	"golang.org/x/text/unicode/bidi"
 )
+
+//LOGGER
+var (
+	InfoLogger  *log.Logger
+	ErrorLogger *log.Logger
+)
+
+func initLoggers() {
+	InfoLogger = log.New(os.Stdout, "", 0)
+	ErrorLogger = log.New(os.Stderr, "", 0)
+}
 
 //Implicit Directional Formatting Characters
 var ImplicitDirectionalDict = map[rune]string{
@@ -58,7 +72,7 @@ var ExplicitDirectionalIsolateDict = map[rune]string{
 
 // ContainBidirectionnal reports whether the byte contains  bidirectionnal character as defined
 // by Unicode's bidirectional algorithm property; this could lead to Trojan Source vulnerability
-func ContainBidirectionnal(b []byte) bool {
+func ContainBidirectionnal(b []byte) (detected bool, ord bidi.Ordering) {
 	var p bidi.Paragraph
 	p.SetBytes(b)
 	ord, err := p.Order()
@@ -69,14 +83,55 @@ func ContainBidirectionnal(b []byte) bool {
 	//Reconstruct Ordering.directions as it is a private fields
 	rOrd := reflect.ValueOf(ord)
 	rDirection := rOrd.FieldByName("directions")
+
 	for i := 1; i < rDirection.Len(); i++ { // check if we have the same directions for all runes, In fact we could just test if len > 1
 		if rDirection.Index(i) != rDirection.Index(0) {
-			return true
+			return true, ord
 		}
 	}
-	return false
+	return false, ord
 }
 
-// Contain Unicode Bidirectional character?
-// PrintwithoutEvil (get normal visual order => reverse all rune different form it)
-// try replace specific character within
+// Scan file or folder to detect potential Trojan Source vulnerability within.
+// recursive: scan folder; exorcised: print out the vulnerability detected
+func Scan(filename string, recursive bool, exorcise bool, verbose bool) {
+	initLoggers()
+
+	//SCAN
+	detected := false
+	line := 0
+	vulns := make(map[int]bidi.Ordering)
+
+	// Reade file
+	f, err := os.Open(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	// read file line by line (bidi.Paragraph: " If text contains a paragraph separator it
+	// will only process the first paragraph")
+	scanner := bufio.NewScanner(f)
+
+	for scanner.Scan() {
+		lineDetector, rOrd := ContainBidirectionnal(scanner.Bytes())
+		if lineDetector {
+			detected = true
+			vulns[line] = rOrd
+		}
+		line++
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	//REPORT
+	if detected {
+		ErrorLogger.Println("detect trojan source in", filename, ":")
+		if verbose {
+			InfoLogger.Printf("%+v", vulns)
+		}
+	} else {
+		InfoLogger.Println("check", filename, "... ok")
+	}
+
+}
