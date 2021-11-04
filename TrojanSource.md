@@ -1,6 +1,6 @@
 # Trojan Source Vulnerability *Kezako* ?
 
-## From the trick to the Vulnerability
+## From the trick to the vulnerability
 ### The trick
 ### Why it could be harmful?
 In fact it is not a new discovery, as these bugs/tricks have been known for like 20 years but it has to be widely and publicly reported. It is why the research give the vulnerability a name.
