@@ -5,7 +5,9 @@
 
   **~>** **Unicode** := an encoding system that allows computers to exchange information regardless of the language used
 
-  **~>** The **Unicode Bidirectional Algorithm** is used to define if we are writing Left-to-Right or Right-to-Left. for example: The `RLO` character (U+202e in unicode) is designed to support languages that are written right to left, such as Arabic and Hebrew
+  **~>** The **Unicode Bidirectional Algorithm** is used to define if we are writing Left-to-Right or Right-to-Left. 
+  
+  **~>**  For example: The `RLO` character (U+202e in unicode) is designed to support languages that are written right to left, such as Arabic and Hebrew. [Copy/paste](https://unicode-explorer.com/c/202E) it in your editor and you will see that you are now writing Right to LEft
  
 
 * Why it could be harmful?
