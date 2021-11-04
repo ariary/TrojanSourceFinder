@@ -21,14 +21,11 @@ To detect Trojan source in file *\<filename\>*:
 tsFinder <filename>
 ```
 
-*tsFinder* is deliberately not very verbose. By default, it will only output if Trojan Source code has been detected. To have more verbosity add the flag `-v`
+
 
 ## Visualize Trojan Source
 *> Visualize how the code is really interpreted by machines/compiler*
 
-To see where the Trojan Source vulnerability could arise and how it is really interpreted use the flage `-exorcise`:
-```shell
-tsFinder -exorcise <filename>
-```
+*tsFinder* is deliberately not very verbose. By default, it will only output if Trojan Source code has been detected. To have more verbosity and **visualize the dangerous line add the flag `-v`**
 
 ### Alternatives
