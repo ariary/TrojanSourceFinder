@@ -14,7 +14,7 @@
 </p>
 
 ## Detect Trojan Source
-*~> Help the detection of Trojan source for manual code review or with CI/CD pipelines*
+*> Help the detection of Trojan source for manual code review or with CI/CD pipelines*
 
 ## Visualize Trojan Source
 *> Visualize how the code is really interpreted by machines/compiler*
