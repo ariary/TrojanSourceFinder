@@ -7,7 +7,7 @@
 
   **~>** The **Unicode Bidirectional Algorithm** is used to define if we are writing Left-to-Right or Right-to-Left. 
   
-  **~>**  For example: The `RLO` character (U+202e in unicode) is designed to support languages that are written right to left, such as Arabic and Hebrew. [Copy/paste](https://unicode-explorer.com/c/202E) it in your editor and you will see that you are now writing Right to LEft
+  **~>**  For example: The `RLO` character (U+202e in unicode) is designed to support languages that are written right to left, such as Arabic and Hebrew. [Copy/paste](https://unicode-explorer.com/c/202E) it in your editor and you will see that you are now writing Right to Left
  
 
 * Why it could be harmful?
