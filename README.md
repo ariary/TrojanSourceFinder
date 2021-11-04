@@ -9,7 +9,7 @@
     ·
     <a href="https://github.com/ariary/TrojanSourceFinder#visualize-trojan-source">Track evil 👀</a>
     ·
-    <a href="https://github.com/ariary/TrojanSourceFinder#detect-trojan-source">Trojan Source ❓</a>
+    <a href="https://github.com/ariary/TrojanSourceFinder/blob/main/TrojanSource.md">Trojan Source ❓</a>
   </strong>
 </p>
 
