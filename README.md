@@ -1,34 +1,22 @@
-<div align=center>
-  <h5><b>TrojanSourceFinder helps developers detect "Trojan Source" vulnerability in source code.</b></h5>
-  
-<table>
-<tr>
-<td>
-  <p align="center">
-  <b>Detect evil </b>
-  <br>
-<sub><b><i>Help the detection for manual code review or with CI/CD pipelines</i></b></sub>
-  <br>
-[<a href="https://github.com/ariary/TrojanSourceFinder#detect-trojan-source">♞</a>]
-  </p>
-
-
-<hr align="center" size=15px color="ff5733" width="70%" >
-  <p align="center">
-  <b>Track evil</b>
-  <br>
-<sub><b><i>Visualize how the code is really interpreted by machines/compiler </i></b></sub>
-  <br>
-[<a href="https://github.com/ariary/TrojanSourceFinder#visualize-trojan-source">👹</a>]
-  </p>
-</td>
-</tr>
-</table>
-</div>
-
-## Trojan Source Vulnerability *Kezako* ?
+<h1 align="center">TrojanSourceFinder</h1>
+<h4 align="center">TrojanSourceFinder helps developers detect "Trojan Source" vulnerability in source code.</h4>
+<p align="center">
+  Trojan Source vulnerability allows an attacker to make malicious code appear innocent.
+  In general, the attacker tries to lure by passing his code off as a comment (visually). It is a serious threat because it concerns many languages. Projects with multiple "untrusted" sources could be concerned
+  <br><br>
+  <strong>
+    <a href="https://github.com/ariary/TrojanSourceFinder#detect-trojan-source">Detect evil 🔎</a>
+    ·
+    <a href="https://github.com/ariary/TrojanSourceFinder#visualize-trojan-source">Track evil 👀</a>
+    ·
+    <a href="https://github.com/ariary/TrojanSourceFinder#detect-trojan-source">Trojan Source ❓</a>
+  </strong>
+</p>
 
 ## Detect Trojan Source
+*~> Help the detection of Trojan source for manual code review or with CI/CD pipelines*
 
 ## Visualize Trojan Source
+*> Visualize how the code is really interpreted by machines/compiler*
+
 ### Alternatives
