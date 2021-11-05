@@ -1,0 +1,18 @@
+http://www.unicode.org/Public/security/latest/confusables.txt
+https://github.com/mpkorstanje/tr39-confusables
+https://stackoverflow.com/questions/22448369/homoglyph-attack-detection-in-email-phishing
+https://stackoverflow.com/questions/18060037/efficient-algorithm-to-find-all-character-equal-strings
+
+
+tr39:
+http://unicode.org/reports/tr39/
+Comment construire un detector en utilisant un skeleton https://elixirforum.com/t/ex-confusables-an-unicode-tr39-confusable-detection-and-skeleton-implementation/38607
+(=> normaliser le mot http://unicode.org/reports/tr15/#Norm_Forms)
+Idem en go: https://pkg.go.dev/github.com/eskriett/confusables (homo to ascii)
+En go et fait aussi le taff!!: https://pkg.go.dev/github.com/Zamiell/confusables#section-readme (plus maintenu)
+lui aussi apparement: github.com/skygeario/go-confusable-homoglyphs"
+
+Construct list, table avec fichier txt
+quand on repere un character dangereux -> Detected
+dur mais flag -confirm/search-sibling ? une fois qu'on a détécté un caracter on reconstrruit le mot dans lequel il est
+est on essayé de trouver son équivalent en relisant fichier

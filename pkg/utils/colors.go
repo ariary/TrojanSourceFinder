@@ -1,4 +1,4 @@
-package bidirectional
+package utils
 
 import "fmt"
 

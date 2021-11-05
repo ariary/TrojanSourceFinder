@@ -6,18 +6,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-)
 
-//LOGGER
-var (
-	InfoLogger  *log.Logger
-	ErrorLogger *log.Logger
+	"github.com/ariary/TrojanSourceFinder/pkg/utils"
 )
-
-func initLoggers() {
-	InfoLogger = log.New(os.Stdout, "", 0)
-	ErrorLogger = log.New(os.Stderr, "", 0)
-}
 
 //Global dict for bidirectional characrters
 var BidirectionalCharactersDict = map[rune]string{
@@ -94,8 +85,9 @@ func getEvilLine(str string, color bool) (exorcisedStr string) {
 	for _, c := range str {
 		if s, isIn := BidirectionalCharactersDict[c]; isIn {
 			//add bad unicode character with its representation
+			s = prefix + s + suffix
 			if color {
-				exorcisedStr += Bold(RedForeground(s))
+				exorcisedStr += utils.Bold(utils.RedForeground(s))
 			} else {
 				exorcisedStr += s
 			}
@@ -108,7 +100,7 @@ func getEvilLine(str string, color bool) (exorcisedStr string) {
 
 // Scan file or folder to detect potential Trojan Source vulnerability within.
 func Scan(filename string, recursive bool, verbose bool, color bool) {
-	initLoggers()
+	utils.InitLoggers()
 
 	if recursive {
 		scanDirectory(filename, verbose, color)
@@ -122,7 +114,6 @@ func scanFile(filename string, verbose bool, color bool) {
 	/*SCAN*/
 	detected := false
 	line := 1
-	//vulns := make(map[int]bidi.Ordering)
 	vulns := make(map[int]string)
 
 	// Reade file
@@ -133,24 +124,23 @@ func scanFile(filename string, verbose bool, color bool) {
 	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
-	//Increase max line length taht could be read by scanner (<=1MB)
+	//Increase max line length that could be read by scanner (<=1MB)
 	buf := make([]byte, 0, 64*1024)
 	scanner.Buffer(buf, 1024*1024)
 
 	for scanner.Scan() { // read file line by line
-		//lineDetector, rOrd := ContainBidirectionnal(scanner.Bytes())
 		lineText := scanner.Text()
 		lineDetector := ContainBidirectionnal(lineText)
+
 		if lineDetector {
 			detected = true
-			//vulns[line] = rOrd
 			vulns[line] = lineText
 		}
 		line++
 	}
 	if err := scanner.Err(); err != nil {
 		if err == bufio.ErrTooLong {
-			ErrorLogger.Println(filename, ": too long lines (<1M), could not be checked")
+			utils.ErrorLogger.Println(filename, ": too long lines (<1M), could not be checked")
 		} else {
 			log.Fatal(err)
 		}
@@ -161,24 +151,24 @@ func scanFile(filename string, verbose bool, color bool) {
 	if detected {
 
 		if color {
-			result = Evil("not ok")
+			result = utils.Evil("not ok")
 		} else {
 			result = "not ok"
 		}
-		ErrorLogger.Println("check", filename, "...", result)
+		utils.ErrorLogger.Println("check", filename, "...", result)
 		if verbose {
 			for line, text := range vulns {
 				msg := getEvilLine(text, color)
-				InfoLogger.Println(line, ": ", msg)
+				utils.InfoLogger.Println(line, ": ", msg)
 			}
 		}
 	} else {
 		if color {
-			result = Green("ok")
+			result = utils.Green("ok")
 		} else {
 			result = "ok"
 		}
-		InfoLogger.Println("check", filename, "...", result)
+		utils.InfoLogger.Println("check", filename, "...", result)
 	}
 }
 

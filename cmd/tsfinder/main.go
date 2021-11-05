@@ -6,18 +6,31 @@ package main
 
 import (
 	"github.com/ariary/TrojanSourceFinder/pkg/bidirectional"
+	"github.com/ariary/TrojanSourceFinder/pkg/homoglyph"
 	"github.com/spf13/cobra"
 )
 
 func main() {
-	//CMD SCAN
 	var recursive bool
 	var verbose bool
 	var color bool
 
+	//CMD FIND HOMOGLYPH
+	var cmdSHomoglyph = &cobra.Command{
+		Use:   "homoglyph [filename]",
+		Short: "Detect homoglyph in file",
+		Args:  cobra.MinimumNArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			name := args[0]
+
+			homoglyph.Scan(name, recursive, verbose, color)
+
+		},
+	}
+
 	var rootCmd = &cobra.Command{
-		Use:   "tsFinder [filename]",
-		Short: "Detect Trojan Source Vulnerability in your code",
+		Use:   "tsfinder [filename]",
+		Short: "Detect Trojan Source Vulnerability in your file",
 		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 
@@ -31,5 +44,7 @@ func main() {
 	rootCmd.PersistentFlags().BoolVarP(&recursive, "recursive", "r", false, "scan all the files in the specified folder")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "make tsfinder more verbose")
 	rootCmd.PersistentFlags().BoolVarP(&color, "color", "c", false, "make tsfinder print with color")
+
+	rootCmd.AddCommand(cmdSHomoglyph)
 	rootCmd.Execute()
 }
