@@ -14,12 +14,15 @@
 </p>
 
 ## Install
+### With `go`
 
+*> Via `go install`*
 ```shell
-go install github.com/ariary/TrojanSourceFinder@latest
+go install github.com/ariary/cmd/TrojanSourceFinder@latest
 ```
+Make sure `$GOPATH` is in your `$PATH`
 
-Or
+*> From source*
 ```shell
 git clone https://github.com/ariary/TrojanSourceFinder
 cd TrojanSourceFinder
@@ -32,6 +35,9 @@ If the command `make build.tsfinder` failed, try:
 env GOOS=target-OS GOARCH=target-architecture
 go build -o tsfinder cmd/main.go
 ```
+
+### With `curl`
+
 
 ## Detect Trojan Source
 *> Help the detection of Trojan source for manual code review or with CI/CD pipelines*
