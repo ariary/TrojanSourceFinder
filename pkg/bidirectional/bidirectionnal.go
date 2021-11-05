@@ -35,6 +35,11 @@ var BidirectionalCharactersDict = map[rune]string{
 	0x2069: "PDI",
 }
 
+var (
+	prefix = "("
+	suffix = ")"
+)
+
 // //Implicit Directional Formatting Characters
 // var ImplicitDirectionalDict = map[rune]string{
 // 	0x200E: "LRM",
@@ -69,19 +74,7 @@ func IsBidirectionalAlgorithm(r rune) bool {
 	if _, isIn := BidirectionalCharactersDict[r]; isIn {
 		return true
 	}
-	// if _, isIn := ImplicitDirectionalDict[r]; isIn {
-	// 	return true
-	// }
 
-	// //Explicit Directional Embedding and Override Formatting Characters
-	// if _, isIn := ExplicitDirectionalDict[r]; isIn {
-	// 	return true
-	// }
-
-	// //Explicit Directional Isolate and Override Formatting Characters
-	// if _, isIn := ExplicitDirectionalIsolateDict[r]; isIn {
-	// 	return true
-	// }
 	return false
 }
 
@@ -97,10 +90,15 @@ func ContainBidirectionnal(str string) bool {
 }
 
 // Return the evil line with Bidirectional character replace
-func getEvilLine(str string) (exorcisedStr string) {
+func getEvilLine(str string, color bool) (exorcisedStr string) {
 	for _, c := range str {
 		if s, isIn := BidirectionalCharactersDict[c]; isIn {
-			exorcisedStr += s
+			//add bad unicode character with its representation
+			if color {
+				exorcisedStr += Bold(RedForeground(s))
+			} else {
+				exorcisedStr += s
+			}
 		} else {
 			exorcisedStr += string(c)
 		}
@@ -109,18 +107,18 @@ func getEvilLine(str string) (exorcisedStr string) {
 }
 
 // Scan file or folder to detect potential Trojan Source vulnerability within.
-func Scan(filename string, recursive bool, verbose bool) {
+func Scan(filename string, recursive bool, verbose bool, color bool) {
 	initLoggers()
 
 	if recursive {
-		scanDirectory(filename, verbose)
+		scanDirectory(filename, verbose, color)
 	} else {
-		scanFile(filename, verbose)
+		scanFile(filename, verbose, color)
 	}
 }
 
 // Scan a file to detect the presence of potential Trojan Source
-func scanFile(filename string, verbose bool) {
+func scanFile(filename string, verbose bool, color bool) {
 	/*SCAN*/
 	detected := false
 	line := 1
@@ -159,34 +157,42 @@ func scanFile(filename string, verbose bool) {
 	}
 
 	/*REPORT*/
+	var result string
 	if detected {
-		ErrorLogger.Println("check", filename, "... not ok")
-		for line, text := range vulns {
-			if verbose {
-				msg := getEvilLine(text)
+
+		if color {
+			result = Evil("not ok")
+		} else {
+			result = "not ok"
+		}
+		ErrorLogger.Println("check", filename, "...", result)
+		if verbose {
+			for line, text := range vulns {
+				msg := getEvilLine(text, color)
 				InfoLogger.Println(line, ": ", msg)
 			}
-			// if exorcise {
-			// 	msg := getExorcisedLine(ord)
-			// 	InfoLogger.Println(line, ": ", msg)
-			// }
 		}
 	} else {
-		InfoLogger.Println("check", filename, "... ok")
+		if color {
+			result = Green("ok")
+		} else {
+			result = "ok"
+		}
+		InfoLogger.Println("check", filename, "...", result)
 	}
 }
 
 // Scan recursively a repository to detect the presence of potential Trojan Source
 // Browse the directory using filepath.Walk package => does not follow symbolic link
 // and for very large directories Walk can be inefficient
-func scanDirectory(filename string, verbose bool) {
+func scanDirectory(filename string, verbose bool, color bool) {
 	err := filepath.Walk(filename, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
 			return err
 		}
 		if !info.IsDir() {
-			scanFile(path, verbose)
+			scanFile(path, verbose, color)
 		}
 		return nil
 	})
@@ -194,93 +200,3 @@ func scanDirectory(filename string, verbose bool) {
 		fmt.Println(err)
 	}
 }
-
-// ContainBidirectionnal reports whether the byte contains  bidirectionnal character as defined
-// by Unicode's bidirectional algorithm property; this could lead to Trojan Source vulnerability
-// func ContainBidirectionnal(b []byte) (detected bool, ord bidi.Ordering) {
-// 	var p bidi.Paragraph
-// 	p.SetBytes(b)
-// 	ord, err := p.Order()
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	//Reconstruct Ordering.directions as it is a private fields
-// 	rOrd := reflect.ValueOf(ord)
-// 	rDirection := rOrd.FieldByName("directions")
-
-// 	for i := 1; i < rDirection.Len(); i++ { // check if we have the same directions for all runes, In fact we could just test if len > 1
-// 		if rDirection.Index(i) != rDirection.Index(0) {
-// 			return true, ord
-// 		}
-// 	}
-// 	return false, ord
-// }
-
-// Return the line contains within runes of bidi.Ordering object without dealing  w/
-// reordering bidirectional characters
-// func getEvilLine(ord bidi.Ordering) (msg string) {
-// 	//Reconstruct Ordering.directions as it is a private fields
-// 	rOrd := reflect.ValueOf(ord)
-// 	rRunes := rOrd.FieldByName("runes")
-// 	var rs []rune                       //will contain all concated runes
-// 	for i := 0; i < rRunes.Len(); i++ { // check if we have the same directions for all runes, In fact we could just test if len > 1
-// 		rRunesSlice := rRunes.Index(i)
-// 		for j := 0; j < rRunesSlice.Len(); j++ { //does not find other way to reconstruc string
-// 			r := rune(reflect.ValueOf(rRunesSlice.Index(j).Int()).Int())
-// 			rs = append(rs, r)
-// 		}
-// 	}
-// 	msg = string(rs)
-// 	return msg
-// }
-
-// Return the line contains within runes of bidi.Ordering object and reorder
-// bidirectional characters
-// func getExorcisedLine(ord bidi.Ordering) (msg string) {
-// 	// what is the default order ?
-// 	//todo (from now our scope is Left-to-Right)
-// 	direction := 0
-
-// 	// indexes of wrong direction runes?
-// 	var evilIndexes []int
-// 	rOrd := reflect.ValueOf(ord)
-// 	rDirection := rOrd.FieldByName("directions")
-
-// 	for i := 0; i < rDirection.Len(); i++ { // check if the direction is the same as the default one
-// 		if int(rDirection.Index(i).Int()) != direction {
-// 			evilIndexes = append(evilIndexes, i)
-// 		}
-// 	}
-
-// 	// reconstruct string, if index is in the wrong list reverseString
-// 	rRunes := rOrd.FieldByName("runes")
-// 	var rs []rune
-// 	for i := 0; i < rRunes.Len(); i++ {
-// 		rRunesSlice := rRunes.Index(i)
-// 		var tmpS string
-// 		var tmpR []rune
-// 		for j := 0; j < rRunesSlice.Len(); j++ { //reconstruct string
-// 			r := rune(reflect.ValueOf(rRunesSlice.Index(j).Int()).Int())
-// 			tmpR = append(tmpR, r)
-// 			rs = append(rs, r)
-// 		}
-
-// 		// determine if it is an evil
-// 		evil := false
-// 		for _, index := range evilIndexes {
-// 			if index == i {
-// 				evil = true
-// 				break
-// 			}
-// 		}
-// 		if evil {
-// 			tmpS += bidi.ReverseString(string(tmpR))
-// 		} else {
-// 			tmpS += string(tmpR)
-// 		}
-// 		msg += tmpS
-// 	}
-// 	//msg = string(rs)
-// 	return msg
-// }
