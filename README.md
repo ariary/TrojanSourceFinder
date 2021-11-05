@@ -24,13 +24,13 @@ Or
 git clone https://github.com/ariary/TrojanSourceFinder
 cd TrojanSourceFinder
 make before.build
-make build.tsFinder
+make build.tsfinder
 ```
 
-If the command `make build.tsFinder` failed, try:
+If the command `make build.tsfinder` failed, try:
 ```shell
 env GOOS=target-OS GOARCH=target-architecture
-go build -o tsFinder cmd/main.go
+go build -o tsfinder cmd/main.go
 ```
 
 ## Detect Trojan Source
@@ -38,18 +38,18 @@ go build -o tsFinder cmd/main.go
 
 To detect Trojan source in file *\<filename\>*:
 ```shell
-tsFinder <filename>
+tsfinder <filename>
 ```
 
 You could also scan a whole directory using `-r` flag:
 ```shell
-tsFinder -r <directory>
+tsfinder -r <directory>
 ```
 
 ## Visualize Trojan Source
 *> Visualize how the code is really interpreted by machines/compiler*
 
-*tsFinder* is deliberately not very verbose. By default, it will only output if Trojan Source code has been detected. To have more verbosity and **visualize the dangerous line add the flag `-v`**
+*tsfinder* is deliberately not very verbose. By default, it will only output if Trojan Source code has been detected. To have more verbosity and **visualize the dangerous line add the flag `-v`**
 
 ## Demo
 ![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder.gif)
