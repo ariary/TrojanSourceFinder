@@ -12,6 +12,11 @@
     <a href="https://github.com/ariary/TrojanSourceFinder/blob/main/TrojanSource.md">Trojan Source ❓</a>
   </strong>
 </p>
+## Install
+
+```shell
+make before.build
+make build.
 
 ## Detect Trojan Source
 *> Help the detection of Trojan source for manual code review or with CI/CD pipelines*
