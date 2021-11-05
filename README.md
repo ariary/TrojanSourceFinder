@@ -16,20 +16,19 @@
 ## Install
 
 ```shell
+go install github.com/mholt/caddy/caddy
+```
+
+Or
+```shell
 make before.build
 make build.tsFinder
-go install github.com/mholt/caddy/caddy
 ```
 
 If the command `make build.tsFinder` failed, try:
 ```shell
 env GOOS=target-OS GOARCH=target-architecture
 go build -o tsFinder cmd/main.go
-```
-or
-
-```
-go install github.com/ariary/TrojanSourceFinder
 ```
 
 ## Detect Trojan Source
