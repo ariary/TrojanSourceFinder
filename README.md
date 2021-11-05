@@ -45,9 +45,10 @@ You could also scan a whole directory using `-r` flag:
 tsFinder -r <directory>
 ```
 
-![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder.gif)
-
 ## Visualize Trojan Source
 *> Visualize how the code is really interpreted by machines/compiler*
 
 *tsFinder* is deliberately not very verbose. By default, it will only output if Trojan Source code has been detected. To have more verbosity and **visualize the dangerous line add the flag `-v`**
+
+
+![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder.gif)
