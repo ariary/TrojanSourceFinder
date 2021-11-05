@@ -21,6 +21,8 @@ go install github.com/ariary/TrojanSourceFinder
 
 Or
 ```shell
+git clone https://github.com/ariary/TrojanSourceFinder
+cd TrojanSourceFinder
 make before.build
 make build.tsFinder
 ```
