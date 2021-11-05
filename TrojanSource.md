@@ -12,10 +12,9 @@
 
 * Why it could be harmful?
 
-  **~>** In fact it is not a new discovery, as these bugs/tricks have been known for like 20 years but it has to be widely and publicly reported. It is why the research give the vulnerability a name.
+  **~>** In fact it is not a new discovery, as these bugs/tricks have been known for like 20 years but it has to be widely and publicly reported. It is why a recent  research (2021) give the vulnerability a name, *Trojan Source*.
   
-  **~>** An attacker could use this characters to produce source code whose tokens are logically encoded in a different order from the one  in  which  they  are  display
-...✏️
+  **~>** An attacker could use this characters to produce source code whose tokens are logically encoded in a different order from the one  in  which  they  are  display. It is particularly, in a system based on human code review/validation, so basically all open source project. Indeed, a malicious contributor can add malicious code lines that will be seen as comments by reviewers, and thus divert theirs attentions.
 
 ## How to detect it in a different way
 * Github [print a warning](https://github.co/hiddenchars) when file contains unicode bidirection algorithms characters. *(does Gitlab detect it?)*
