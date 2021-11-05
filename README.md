@@ -16,7 +16,14 @@
 
 ```shell
 make before.build
-make build.
+make build.tsFinder
+go install github.com/mholt/caddy/caddy
+```
+
+If the command `make build.tsFinder` failed, try:
+```shell
+env GOOS=target-OS GOARCH=target-architecture
+
 
 ## Detect Trojan Source
 *> Help the detection of Trojan source for manual code review or with CI/CD pipelines*
