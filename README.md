@@ -21,7 +21,10 @@ To detect Trojan source in file *\<filename\>*:
 tsFinder <filename>
 ```
 
-
+You could also scan a whole directory using `-r` flag:
+```shell
+tsFinder -r <directory>
+```
 
 ## Visualize Trojan Source
 *> Visualize how the code is really interpreted by machines/compiler*
