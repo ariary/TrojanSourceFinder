@@ -50,5 +50,5 @@ tsFinder -r <directory>
 
 *tsFinder* is deliberately not very verbose. By default, it will only output if Trojan Source code has been detected. To have more verbosity and **visualize the dangerous line add the flag `-v`**
 
-
+## Demo
 ![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder.gif)
