@@ -67,4 +67,4 @@ tsfinder -c -v -r <directory>
 ```
 
 ## Demo
-![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder.gif)
+![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder-demo.gif)
