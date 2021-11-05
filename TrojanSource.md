@@ -16,7 +16,7 @@
   
   **~>** An attacker could use this characters to produce source code whose tokens are logically encoded in a different order from the one  in  which  they  are  display. It is particularly, in a system based on human code review/validation, so basically all open source project. Indeed, a malicious contributor can add malicious code lines that will be seen as comments by reviewers, and thus divert theirs attentions.
 
-## How to detect it in a different way
+## How to differently detect it?
 * Github [print a warning](https://github.co/hiddenchars) when file contains unicode bidirection algorithms characters. *(does Gitlab detect it?)*
 * [nickboucher/bidi-viewer](https://github.com/nickboucher/bidi-viewer): View and Analyze trojan source in a React-based webapp
 * If your text editors have a “strip all comments” mode, enable it.
