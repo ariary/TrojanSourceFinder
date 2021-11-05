@@ -37,7 +37,11 @@ go build -o tsfinder cmd/main.go
 ```
 
 ### With `curl`
+*> From release*
 
+```shell
+curl -lO https://github.com/ariary/TrojanSourceFinder/releases/latest/download/tsfinder
+```
 
 ## Detect Trojan Source
 *> Help the detection of Trojan source for manual code review or with CI/CD pipelines*
