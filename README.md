@@ -16,7 +16,7 @@
 ## Install
 
 ```shell
-go install github.com/ariary/TrojanSourceFinder
+go install github.com/ariary/TrojanSourceFinder@latest
 ```
 
 Or
