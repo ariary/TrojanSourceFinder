@@ -12,6 +12,7 @@
     <a href="https://github.com/ariary/TrojanSourceFinder/blob/main/TrojanSource.md">Trojan Source ❓</a>
   </strong>
 </p>
+
 ## Install
 
 ```shell
@@ -43,6 +44,8 @@ You could also scan a whole directory using `-r` flag:
 ```shell
 tsFinder -r <directory>
 ```
+
+![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder.gif)
 
 ## Visualize Trojan Source
 *> Visualize how the code is really interpreted by machines/compiler*
