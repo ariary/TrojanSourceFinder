@@ -16,7 +16,7 @@
 ## Install
 
 ```shell
-go install github.com/mholt/caddy/caddy
+go install github.com/ariary/TrojanSourceFinder
 ```
 
 Or
