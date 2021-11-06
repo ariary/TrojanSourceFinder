@@ -56,7 +56,7 @@ You could also scan a whole directory using `-r` flag:
 tsfinder -r [directory]
 ```
 
-### Go further *(Homoglyph*)*
+### Go further *(Homoglyph)*
 
 Trojan Source is not new and isn't the only hazard. Another one is *"Homoglyph"*.
 
