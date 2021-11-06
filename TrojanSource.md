@@ -38,6 +38,24 @@ See [example](https://github.com/ariary/TrojanSourceFinder/blob/main/tests/homog
 * Another example is the *IDN homograph attack*:
 
   **~>** The internationalized domain name (IDN) homograph attack is a technique used by malicious people to impersonate a website. With the internationalization of domain names, it is now possible to register an address with homoglyphs like ɡіτһυЬЬ.ϲоⅿ (and therefore create a similar or different website)
+### Example
+``` python
+а = True # in a naive world, everybody is admin 
+
+# some stuff 
+
+a = False # finally the world is mean, we don't want admin anymore 
+
+if а:
+    print("You are an admin!")
+else:
+    print("You are not admin.")
+```
+
+The output:
+```
+You are an admin!
+```
 
 ## Sources
 
