@@ -25,10 +25,21 @@
 ## Homoglyph
 
 In the same category of risk we have homoglyph:
-> a homoglyph is one of two or more graphemes, characters, or glyphs with shapes that appear identical or very similar.
 
-For an attacker who wants malicious code and lure the reviewers, homoglyph are a good weapon. For example he could write a function with a name which is an homoglyph of an already existing one and then call the homoglyph. In that way, we could think he is calling the original one.
+*a homoglyph is one of two or more graphemes, characters, or glyphs with shapes that appear identical or very similar.
+
+  **~>** In fact we are speaking about homograph (word composed of homoglyph)
+
+  **~>** For example `агіагу` is an homogram of `ariary`
+
+  **~>** For an attacker who wants malicious code and lure the reviewers, homoglyph are a good weapon. For example he could write a function with a name which is an homogram of an already existing one and then call the homoglyph. In that way, we could think he is calling the original one.
 See [example](https://github.com/ariary/TrojanSourceFinder/blob/main/tests/homoglyphe-function.go) (from nickboucher repository)
+
+*Another example is the *IDN homograph attack*:
+
+The internationalized domain name (IDN) homograph attack is a technique used by malicious people to impersonate a website.
+
+With the internationalization of domain names, it is now possible to register an address with homoglyphs like ԁcоԁе.fr (and therefore create a similar or different website
 
 ## Sources
 
