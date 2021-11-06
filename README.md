@@ -48,12 +48,21 @@ curl -lO https://github.com/ariary/TrojanSourceFinder/releases/latest/download/t
 
 To detect Trojan source in file *\<filename\>*:
 ```shell
-tsfinder <filename>
+tsfinder [filename]
 ```
 
 You could also scan a whole directory using `-r` flag:
 ```shell
-tsfinder -r <directory>
+tsfinder -r [directory]
+```
+
+### Go further *(Homoglyph*)*
+
+Trojan Source is not new and isn't the only hazard. Another one is *"Homoglyph"*.
+
+tsfinder help detecting them with `homoglyph` command:
+```shell
+tsfinder homoglyph [filename] [flags]
 ```
 
 ## Visualize Trojan Source
