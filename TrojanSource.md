@@ -58,6 +58,9 @@ The output:
 You are an admin!
 ```
 
+This trick is effecient to make believe the value of a variable changes
+
+
 ## Sources
 
 * [nickboucher/trojan-source repo](https://github.com/nickboucher/trojan-source): Expose vulnerability and many many examples
