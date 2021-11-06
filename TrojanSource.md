@@ -37,9 +37,7 @@ See [example](https://github.com/ariary/TrojanSourceFinder/blob/main/tests/homog
 
 * Another example is the *IDN homograph attack*:
 
-The internationalized domain name (IDN) homograph attack is a technique used by malicious people to impersonate a website.
-
-With the internationalization of domain names, it is now possible to register an address with homoglyphs like ԁcоԁе.fr (and therefore create a similar or different website
+  **~>** The internationalized domain name (IDN) homograph attack is a technique used by malicious people to impersonate a website. With the internationalization of domain names, it is now possible to register an address with homoglyphs like ɡіτһυЬЬ.ϲоⅿ (and therefore create a similar or different website)
 
 ## Sources
 
