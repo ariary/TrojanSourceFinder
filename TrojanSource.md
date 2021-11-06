@@ -14,7 +14,7 @@
 
   **~>** In fact it is not a new discovery, as these bugs/tricks have been known for like 20 years but it has to be widely and publicly reported. It is why a recent  research (2021) give the vulnerability a name, *Trojan Source*.
   
-  **~>** An attacker could use this characters to produce source code whose tokens are logically encoded in a different order from the one  in  which  they  are  display. It is particularly, in a system based on human code review/validation, so basically all open source project. Indeed, a malicious contributor can add malicious code lines that will be seen as comments by reviewers, and thus divert theirs attentions.See [examples]() (from nickboucher repository)
+  **~>** An attacker could use this characters to produce source code whose tokens are logically encoded in a different order from the one  in  which  they  are  display. It is particularly, in a system based on human code review/validation, so basically all open source project. Indeed, a malicious contributor can add malicious code lines that will be seen as comments by reviewers, and thus divert theirs attentions.See [example](https://github.com/ariary/TrojanSourceFinder/blob/main/tests/comment-out.cpp) (from nickboucher repository)
 
 
 ## How to differently detect it?
@@ -28,7 +28,7 @@ In the same category of risk we have homoglyph:
 > a homoglyph is one of two or more graphemes, characters, or glyphs with shapes that appear identical or very similar.
 
 For an attacker who wants malicious code and lure the reviewers, homoglyph are a good weapon. For example he could write a function with a name which is an homoglyph of an already existing one and then call the homoglyph. In that way, we could think he is calling the original one.
-See [examples]() (from nickboucher repository)
+See [example](https://github.com/ariary/TrojanSourceFinder/blob/main/tests/homoglyphe-function.go) (from nickboucher repository)
 
 ## Sources
 
