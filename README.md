@@ -65,6 +65,12 @@ tsfinder help detecting them with `homoglyph` command:
 tsfinder homoglyph [filename] [flags]
 ```
 
+You could see if there is a sibling (ie word with same "skeleton") for the homographs found in `path` using the flag `--sibling`:
+```shell
+tsfinder homoglyph [filename] --sibling [path] 
+```
+*Functionality under development, depending on other project*
+
 ## Visualize Trojan Source
 *> Visualize how the code is really interpreted by machines/compiler*
 
@@ -76,4 +82,7 @@ tsfinder -c -v -r <directory>
 ```
 
 ## Demo
-![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder-demo.gif)
+![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder-demo-trojansource.gif)
+
+### Homoglyph
+![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder-demo-homoglyph.gif)
