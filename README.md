@@ -46,15 +46,11 @@ curl -lO https://github.com/ariary/TrojanSourceFinder/releases/latest/download/t
 ## Detect Trojan Source
 *> Help the detection of Trojan source for manual code review or with CI/CD pipelines*
 
-To detect Trojan source in file *\<filename\>*:
+To detect Trojan source in file or directory *\<path\>*:
 ```shell
-tsfinder [filename]
+tsfinder [path]
 ```
 
-You could also scan a whole directory using `-r` flag:
-```shell
-tsfinder -r [directory]
-```
 
 ### Go further *(Homoglyph)*
 
@@ -78,7 +74,7 @@ tsfinder homoglyph [filename] --sibling [path]
 
 To better see where Trojan Source were you have for colored output with `-c` flag (also useful with directory scan):
 ```shell
-tsfinder -c -v -r <directory>
+tsfinder -c -v <directory>
 ```
 
 ## Demo
