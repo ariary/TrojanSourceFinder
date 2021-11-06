@@ -15,6 +15,7 @@ func main() {
 	var verbose bool
 	var color bool
 
+	var sibling bool
 	//CMD FIND HOMOGLYPH
 	var cmdSHomoglyph = &cobra.Command{
 		Use:   "homoglyph [filename]",
@@ -23,11 +24,14 @@ func main() {
 		Run: func(cmd *cobra.Command, args []string) {
 			name := args[0]
 
-			homoglyph.Scan(name, recursive, verbose, color)
+			homoglyph.Scan(name, recursive, verbose, color, sibling)
 
 		},
 	}
+	//flag handling
+	cmdSHomoglyph.PersistentFlags().BoolVarP(&sibling, "sibling", "s", false, "(experimental) scan all file to find the sibling  (ie word with the same skeleton) of homoglyphes found")
 
+	//TSFINDER CMD
 	var rootCmd = &cobra.Command{
 		Use:   "tsfinder [filename]",
 		Short: "Detect Trojan Source Vulnerability in your file",
