@@ -58,7 +58,7 @@ tsfinder -r [directory]
 
 ### Go further *(Homoglyph)*
 
-Trojan Source is not new and isn't the only hazard. Another one is *"Homoglyph"*.
+Trojan Source is not new and isn't the only hazard. Another one is *"Homoglyph"*.(*[Kezako?](https://github.com/ariary/TrojanSourceFinder/blob/main/TrojanSource.md#homoglyph)*)
 
 tsfinder help detecting them with `homoglyph` command:
 ```shell
