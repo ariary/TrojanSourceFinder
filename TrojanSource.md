@@ -58,7 +58,7 @@ The output:
 You are an admin!
 ```
 
-This trick is effecient to make believe the value of a variable changes
+This trick is effecient to make believe the value of a variable changes. Especially for languages where assignment and initialization steps are identical.
 
 
 ## Sources
