@@ -14,26 +14,26 @@ func main() {
 	var verbose bool
 	var color bool
 
-	var sibling bool
+	var sibling []string
 	//CMD FIND HOMOGLYPH
 	var cmdSHomoglyph = &cobra.Command{
-		Use:   "homoglyph [filename]",
-		Short: "Detect homoglyph in file",
+		Use:   "homoglyph [path]",
+		Short: "Detect homoglyph in file or directory",
 		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			name := args[0]
+			path := args[0]
 
-			homoglyph.Scan(name, verbose, color, sibling)
+			homoglyph.Scan(path, verbose, color, sibling)
 
 		},
 	}
 	//flag handling
-	cmdSHomoglyph.PersistentFlags().BoolVarP(&sibling, "sibling", "s", false, "(experimental) scan all file to find the sibling  (ie word with the same skeleton) of homoglyphes found")
+	cmdSHomoglyph.PersistentFlags().StringSliceVarP(&sibling, "sibling", "s", nil, "(experimental) scan all files defined in scope to find the sibling  (ie word with the same skeleton) of homoglyphes found")
 
 	//TSFINDER CMD
 	var rootCmd = &cobra.Command{
-		Use:   "tsfinder [filename]",
-		Short: "Detect Trojan Source Vulnerability in your file",
+		Use:   "tsfinder [path]",
+		Short: "Detect Trojan Source Vulnerability in your file or directory",
 		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 

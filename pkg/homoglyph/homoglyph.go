@@ -18,62 +18,90 @@ var (
 	suffix = "]"
 )
 
-// Return the sibling of a specific homoglyphe found in scope. Homoglyph -> Skeleton. Search for word with same skeleton.
-func getSiblings(scope []string, homoglyphLine string, color bool) {
+// Return the sibling of a specific homoglyphe found in file. Homoglyph -> Skeleton. Search for word with same skeleton.
+func getSiblingsFile(path string, homoglyphLine string, color bool) {
 	homoglyphes := getallHomoglyph(homoglyphLine)
 	for _, homoglyph := range homoglyphes {
-		for i := 0; i < len(scope); i++ {
-			//SCAN
-			detected := false
-			line := 1
-			siblings := make(map[int][]string)
-			// Reade file
-			f, err := os.Open(scope[i])
-			if err != nil {
-				log.Fatal(err)
-			}
-			defer f.Close()
 
-			scanner := bufio.NewScanner(f)
-			//Increase max line length that could be read by scanner (<=1MB)
-			buf := make([]byte, 0, 64*1024)
-			scanner.Buffer(buf, 1024*1024)
+		//SCAN
+		detected := false
+		line := 1
+		siblings := make(map[int][]string)
+		// Reade file
+		f, err := os.Open(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer f.Close()
 
-			for scanner.Scan() { // read file line by line
-				lineText := scanner.Text()
-				words := strings.Fields(lineText)
-				for _, word := range words {
-					lineDetector := confusables.IsConfusable(homoglyph, word)
+		scanner := bufio.NewScanner(f)
+		//Increase max line length that could be read by scanner (<=1MB)
+		buf := make([]byte, 0, 64*1024)
+		scanner.Buffer(buf, 1024*1024)
 
-					if lineDetector {
-						detected = true
-						siblings[line] = append(siblings[line], word)
-					}
-					line++
+		for scanner.Scan() { // read file line by line
+			lineText := scanner.Text()
+			words := strings.Fields(lineText)
+			for _, word := range words {
+				lineDetector := confusables.IsConfusable(homoglyph, word)
+
+				if lineDetector {
+					detected = true
+					siblings[line] = append(siblings[line], word)
 				}
 			}
+			line++
+		}
 
-			//REPORT
-			var result string
-			if detected {
-				for line, sibling := range siblings {
-					for i := 0; i < len(sibling); i++ {
-						utils.ErrorLogger.Println("\t", line, ":", utils.Evil(sibling[i]))
+		//REPORT
+		if detected {
+			if color {
+				path = utils.Bold(utils.Magenta(path))
+			}
+			utils.ErrorLogger.Println("Find sibling in", path, ":")
+			for line, sibling := range siblings {
+				for i := 0; i < len(sibling); i++ {
+					if color {
+						sibling[i] = utils.Purple(sibling[i])
 					}
+					utils.ErrorLogger.Println("\t", line, ":", sibling[i])
 				}
-
-			} else {
-				if color {
-					result += utils.Green("do not detect sibling")
-				} else {
-					result += "do not detect sibling"
-				}
-				utils.InfoLogger.Println(result)
 			}
 
 		}
 	}
+}
 
+// Return the sibling of a specific homoglyph found in directory
+func getSiblingsDirectory(pathD string, homoglyphLine string, color bool) {
+	err := filepath.Walk(pathD, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+		if !info.IsDir() {
+			getSiblingsFile(path, homoglyphLine, color)
+		}
+		return nil
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+// Return the sibling of a specific homoglyphe found in file. Homoglyph -> Skeleton. Search for word with same skeleton.
+func getSiblings(path string, homoglyphLine string, color bool) {
+	// Recursive (directory) or normal scan?
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if fileInfo.IsDir() {
+		getSiblingsDirectory(path, homoglyphLine, color)
+	} else {
+		getSiblingsFile(path, homoglyphLine, color)
+	}
 }
 
 //Return All homoglyph in string
@@ -96,19 +124,17 @@ func getEvilLine(str string, color bool) (exorcisedStr string) {
 		if confusable.IsDangerous(word, []string{}) {
 			word = prefix + word + suffix
 			if color {
-				exorcisedStr += utils.Bold(utils.RedForeground(word))
+				word = utils.Bold(utils.RedForeground(word))
 			}
-
-		} else {
-			exorcisedStr += word
 		}
+		exorcisedStr += word
 
 	}
 	return exorcisedStr
 }
 
 // Scan file or folder to detect potential homoglyph within.
-func Scan(path string, verbose bool, color bool, sibling bool) {
+func Scan(path string, verbose bool, color bool, sibling []string) {
 	utils.InitLoggers()
 	// Recursive (directory) or normal scan?
 	fileInfo, err := os.Stat(path)
@@ -124,7 +150,7 @@ func Scan(path string, verbose bool, color bool, sibling bool) {
 }
 
 // Scan a file to detect the presence of potential Homoglyphe
-func scanFile(filename string, verbose bool, color bool, sibling bool) {
+func scanFile(filename string, verbose bool, color bool, scope []string) {
 	/*SCAN*/
 	detected := false
 	line := 1
@@ -176,9 +202,13 @@ func scanFile(filename string, verbose bool, color bool, sibling bool) {
 				utils.InfoLogger.Println(line, ": ", msg)
 			}
 		}
-		if sibling {
+		/*SIBLING REPORT*/
+		if scope != nil {
 			for _, text := range vulns {
-				getSiblings([]string{filename}, text, color) //TODO enhance scope
+				for i := 0; i < len(scope); i++ {
+					path := scope[i]
+					getSiblings(path, text, color)
+				}
 			}
 		}
 	} else {
@@ -194,14 +224,14 @@ func scanFile(filename string, verbose bool, color bool, sibling bool) {
 // Scan recursively a repository to detect the presence of potential Homoglyph
 // Browse the directory using filepath.Walk package => does not follow symbolic link
 // and for very large directories Walk can be inefficient
-func scanDirectory(filename string, verbose bool, color bool, sibling bool) {
+func scanDirectory(filename string, verbose bool, color bool, scope []string) {
 	err := filepath.Walk(filename, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
 			return err
 		}
 		if !info.IsDir() {
-			scanFile(path, verbose, color, sibling)
+			scanFile(path, verbose, color, scope)
 		}
 		return nil
 	})
