@@ -11,7 +11,6 @@ import (
 )
 
 func main() {
-	var recursive bool
 	var verbose bool
 	var color bool
 
@@ -24,7 +23,7 @@ func main() {
 		Run: func(cmd *cobra.Command, args []string) {
 			name := args[0]
 
-			homoglyph.Scan(name, recursive, verbose, color, sibling)
+			homoglyph.Scan(name, verbose, color, sibling)
 
 		},
 	}
@@ -40,12 +39,11 @@ func main() {
 
 			name := args[0]
 
-			bidirectional.Scan(name, recursive, verbose, color)
+			bidirectional.Scan(name, verbose, color)
 		},
 	}
 
 	//flag handling
-	rootCmd.PersistentFlags().BoolVarP(&recursive, "recursive", "r", false, "scan all the files in the specified folder")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "make tsfinder more verbose")
 	rootCmd.PersistentFlags().BoolVarP(&color, "color", "c", false, "make tsfinder print with color")
 

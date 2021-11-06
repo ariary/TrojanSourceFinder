@@ -108,13 +108,18 @@ func getEvilLine(str string, color bool) (exorcisedStr string) {
 }
 
 // Scan file or folder to detect potential homoglyph within.
-func Scan(filename string, recursive bool, verbose bool, color bool, sibling bool) {
+func Scan(path string, verbose bool, color bool, sibling bool) {
 	utils.InitLoggers()
+	// Recursive (directory) or normal scan?
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	if recursive {
-		scanDirectory(filename, verbose, color, sibling)
+	if fileInfo.IsDir() {
+		scanDirectory(path, verbose, color, sibling)
 	} else {
-		scanFile(filename, verbose, color, sibling)
+		scanFile(path, verbose, color, sibling)
 	}
 }
 

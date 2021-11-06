@@ -99,14 +99,20 @@ func getEvilLine(str string, color bool) (exorcisedStr string) {
 }
 
 // Scan file or folder to detect potential Trojan Source vulnerability within.
-func Scan(filename string, recursive bool, verbose bool, color bool) {
+func Scan(path string, verbose bool, color bool) {
 	utils.InitLoggers()
-
-	if recursive {
-		scanDirectory(filename, verbose, color)
-	} else {
-		scanFile(filename, verbose, color)
+	// Recursive (directory) or normal scan?
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	if fileInfo.IsDir() {
+		scanDirectory(path, verbose, color)
+	} else {
+		scanFile(path, verbose, color)
+	}
+
 }
 
 // Scan a file to detect the presence of potential Trojan Source
@@ -172,11 +178,12 @@ func scanFile(filename string, verbose bool, color bool) {
 	}
 }
 
-// Scan recursively a repository to detect the presence of potential Trojan Source
+// Scan recursively all the file of a repository (pathD) to detect the presence of
+//potential Trojan Source.
 // Browse the directory using filepath.Walk package => does not follow symbolic link
 // and for very large directories Walk can be inefficient
-func scanDirectory(filename string, verbose bool, color bool) {
-	err := filepath.Walk(filename, func(path string, info os.FileInfo, err error) error {
+func scanDirectory(pathD string, verbose bool, color bool) {
+	err := filepath.Walk(pathD, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
 			return err
