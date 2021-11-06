@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/ariary/TrojanSourceFinder/pkg/utils"
 )
@@ -165,7 +166,12 @@ func scanFile(filename string, verbose bool, color bool) {
 		if verbose {
 			for line, text := range vulns {
 				msg := getEvilLine(text, color)
-				utils.InfoLogger.Println(line, ": ", msg)
+				var lineS string
+				lineS = strconv.Itoa(line)
+				if color {
+					lineS = utils.Yellow(lineS)
+				}
+				utils.InfoLogger.Println(lineS, ": ", msg)
 			}
 		}
 	} else {

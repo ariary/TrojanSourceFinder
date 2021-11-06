@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/ariary/TrojanSourceFinder/pkg/utils"
-	"github.com/eskriett/confusables"
 	confusable "github.com/skygeario/go-confusable-homoglyphs"
 )
 
@@ -18,94 +17,8 @@ var (
 	suffix = "]"
 )
 
-// Return the sibling of a specific homoglyphe found in file. Homoglyph -> Skeleton. Search for word with same skeleton.
-func getSiblingsFile(path string, homoglyphLine string, color bool) {
-	homoglyphes := getallHomoglyph(homoglyphLine)
-	for _, homoglyph := range homoglyphes {
-
-		//SCAN
-		detected := false
-		line := 1
-		siblings := make(map[int][]string)
-		// Reade file
-		f, err := os.Open(path)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer f.Close()
-
-		scanner := bufio.NewScanner(f)
-		//Increase max line length that could be read by scanner (<=1MB)
-		buf := make([]byte, 0, 64*1024)
-		scanner.Buffer(buf, 1024*1024)
-
-		for scanner.Scan() { // read file line by line
-			lineText := scanner.Text()
-			words := strings.Fields(lineText)
-			for _, word := range words {
-				lineDetector := confusables.IsConfusable(homoglyph, word)
-
-				if lineDetector {
-					detected = true
-					siblings[line] = append(siblings[line], word)
-				}
-			}
-			line++
-		}
-
-		//REPORT
-		if detected {
-			if color {
-				path = utils.Bold(utils.Magenta(path))
-			}
-			utils.ErrorLogger.Println("Find sibling in", path, ":")
-			for line, sibling := range siblings {
-				for i := 0; i < len(sibling); i++ {
-					if color {
-						sibling[i] = utils.Purple(sibling[i])
-					}
-					utils.ErrorLogger.Println("\t", line, ":", sibling[i])
-				}
-			}
-
-		}
-	}
-}
-
-// Return the sibling of a specific homoglyph found in directory
-func getSiblingsDirectory(pathD string, homoglyphLine string, color bool) {
-	err := filepath.Walk(pathD, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			fmt.Println(err)
-			return err
-		}
-		if !info.IsDir() {
-			getSiblingsFile(path, homoglyphLine, color)
-		}
-		return nil
-	})
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-// Return the sibling of a specific homoglyphe found in file. Homoglyph -> Skeleton. Search for word with same skeleton.
-func getSiblings(path string, homoglyphLine string, color bool) {
-	// Recursive (directory) or normal scan?
-	fileInfo, err := os.Stat(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if fileInfo.IsDir() {
-		getSiblingsDirectory(path, homoglyphLine, color)
-	} else {
-		getSiblingsFile(path, homoglyphLine, color)
-	}
-}
-
 //Return All homoglyph in string
-func getallHomoglyph(str string) []string {
+func getAllHomoglyph(str string) []string {
 	var homoglyphes []string
 	words := strings.Fields(str)
 	for _, word := range words {
@@ -207,7 +120,7 @@ func scanFile(filename string, verbose bool, color bool, scope []string) {
 			for _, text := range vulns {
 				for i := 0; i < len(scope); i++ {
 					path := scope[i]
-					getSiblings(path, text, color)
+					getSiblings(path, text, color, verbose)
 				}
 			}
 		}
