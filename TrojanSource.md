@@ -58,10 +58,12 @@ The output:
 You are an admin!
 ```
 
-This trick is effecient to make believe the value of a variable changes. Especially for languages where assignment and initialization steps are identical.
+This trick is effecient to make believe the value of a variable changes. Especially for languages where assignment and initialization steps are identical. In this example we fake changing the value of `a`
 
 
 ## Sources
 
 * [nickboucher/trojan-source repo](https://github.com/nickboucher/trojan-source): Expose vulnerability and many many examples
 * [Whitepaper](https://trojansource.codes/trojan-source.pdf): present the vulnerability
+* [article](https://certitude.consulting/blog/en/invisible-backdoor/): explenation & illustration of the vuln with javascript
+* [dcode](https://www.dcode.fr/generateur-homoglyphes-homographes): make your own  homoglyph
