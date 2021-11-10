@@ -65,5 +65,5 @@ This trick is effecient to make believe the value of a variable changes. Especia
 
 * [nickboucher/trojan-source repo](https://github.com/nickboucher/trojan-source): Expose vulnerability and many many examples
 * [Whitepaper](https://trojansource.codes/trojan-source.pdf): present the vulnerability
-* [article](https://certitude.consulting/blog/en/invisible-backdoor/): explenation & illustration of the vuln with javascript
+* [article](https://certitude.consulting/blog/en/invisible-backdoor/): explanation & illustration of the vuln with javascript
 * [dcode](https://www.dcode.fr/generateur-homoglyphes-homographes): make your own  homoglyph
