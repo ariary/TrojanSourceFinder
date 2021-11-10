@@ -100,7 +100,7 @@ func getEvilLine(str string, color bool) (exorcisedStr string) {
 }
 
 // Scan file or folder to detect potential Trojan Source vulnerability within.
-//This function exit with status code 1 if trojan source was detected, 0 otherwise
+// This function exit with status code 1 if trojan source has been detected, 0 otherwise
 func Scan(path string, verbose bool, color bool) {
 	utils.InitLoggers()
 	// Recursive (directory) or normal scan?
@@ -120,7 +120,7 @@ func Scan(path string, verbose bool, color bool) {
 }
 
 // Scan a file to detect the presence of potential Trojan Source
-// return 0 if no trojan source was detected
+// return 0 if no trojan source has been detected within file
 func scanFile(filename string, verbose bool, color bool) int {
 	/*SCAN*/
 	detected := false

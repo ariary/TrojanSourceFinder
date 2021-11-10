@@ -65,7 +65,7 @@ You could see if there is a sibling (ie word with same "skeleton") for the homog
 ```shell
 tsfinder homoglyph [filename] --sibling [path] 
 ```
-*`--sibling` is a functionality under development, depending on other project*
+*Functionality under development, mainly depending on other project*
 
 ## Visualize Trojan Source
 *> Visualize how the code is really interpreted by machines/compiler*

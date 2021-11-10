@@ -47,6 +47,7 @@ func getEvilLine(str string, color bool) (exorcisedStr string) {
 }
 
 // Scan file or folder to detect potential homoglyph within.
+// This function exit with status code 1 if homoglyph has been detected, 0 otherwise
 func Scan(path string, verbose bool, color bool, sibling []string) {
 	utils.InitLoggers()
 	// Recursive (directory) or normal scan?
@@ -55,15 +56,19 @@ func Scan(path string, verbose bool, color bool, sibling []string) {
 		log.Fatal(err)
 	}
 
+	var detected int
 	if fileInfo.IsDir() {
-		scanDirectory(path, verbose, color, sibling)
+		detected = scanDirectory(path, verbose, color, sibling)
 	} else {
-		scanFile(path, verbose, color, sibling)
+		detected = scanFile(path, verbose, color, sibling)
 	}
+
+	os.Exit(detected)
 }
 
-// Scan a file to detect the presence of potential Homoglyphe
-func scanFile(filename string, verbose bool, color bool, scope []string) {
+// Scan a file to detect the presence of potential Homoglyph
+// return 0 if no homoglyph has been detected within file
+func scanFile(filename string, verbose bool, color bool, scope []string) int {
 	/*SCAN*/
 	detected := false
 	line := 1
@@ -124,6 +129,7 @@ func scanFile(filename string, verbose bool, color bool, scope []string) {
 				}
 			}
 		}
+		return 1
 	} else {
 		if color {
 			result = utils.Green("ok")
@@ -132,23 +138,31 @@ func scanFile(filename string, verbose bool, color bool, scope []string) {
 		}
 		utils.InfoLogger.Println("check", filename, "...", result)
 	}
+	return 0
 }
 
 // Scan recursively a repository to detect the presence of potential Homoglyph
 // Browse the directory using filepath.Walk package => does not follow symbolic link
 // and for very large directories Walk can be inefficient
-func scanDirectory(filename string, verbose bool, color bool, scope []string) {
+func scanDirectory(filename string, verbose bool, color bool, scope []string) (result int) {
 	err := filepath.Walk(filename, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
 			return err
 		}
 		if !info.IsDir() {
-			scanFile(path, verbose, color, scope)
+			result += scanFile(path, verbose, color, scope)
 		}
 		return nil
 	})
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	// "normalize" result
+	if result > 0 {
+		result = 1
+	}
+
+	return result
 }
