@@ -51,6 +51,11 @@ To detect Trojan source in file or directory *\<path\>*:
 tsfinder [path]
 ```
 
+### Detect only in text file
+*> Source code is likely an text file. it could help to rule out false positives*
+```shell
+tsfinder -t [path]
+```
 
 ### Go further *(Homoglyph)*
 
