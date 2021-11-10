@@ -44,7 +44,7 @@ curl -lO https://github.com/ariary/TrojanSourceFinder/releases/latest/download/t
 ```
 
 ## Detect Trojan Source
-*> Help the detection of Trojan source for manual code review or with CI/CD pipelines*
+*> Help the detection of Trojan source for manual code review or with CI/CD pipelines (Unicode bidirectional characaters)*
 
 To detect Trojan source in file or directory *\<path\>*:
 ```shell
