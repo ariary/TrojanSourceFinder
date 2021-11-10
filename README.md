@@ -52,10 +52,12 @@ tsfinder [path]
 ```
 
 ### Detect only in text file
-*> Source code is likely an text file. it could help to rule out false positives*
+*> Source code files are likely text files. Withdraw them for scan could help to rule out false positives*
+
 ```shell
 tsfinder -t [path]
 ```
+Add `-v` help to see which file has been skipped by scan.
 
 ### Go further *(Homoglyph)*
 
@@ -75,9 +77,9 @@ tsfinder homoglyph [filename] --sibling [path]
 ## Visualize Trojan Source
 *> Visualize how the code is really interpreted by machines/compiler*
 
-*tsfinder* is deliberately not very verbose. By default, it will only output if Trojan Source code has been detected. To have more verbosity and **visualize the dangerous line add the flag `-v`**
+*tsfinder* is deliberately not very verbose. By default, it will only output if Trojan Source code has been detected. To have more verbosity and **visualize the dangerous line add the flag `-v`**.
 
-To better see where Trojan Source were you have for colored output with `-c` flag (also useful with directory scan):
+To better see where Trojan Sources were, you could enable colored output with `-c` flag (also useful with directory scan):
 ```shell
 tsfinder -c -v <directory>
 ```
