@@ -100,6 +100,7 @@ func getEvilLine(str string, color bool) (exorcisedStr string) {
 }
 
 // Scan file or folder to detect potential Trojan Source vulnerability within.
+//This function exit with status code 1 if trojan source was detected, 0 otherwise
 func Scan(path string, verbose bool, color bool) {
 	utils.InitLoggers()
 	// Recursive (directory) or normal scan?
@@ -108,16 +109,19 @@ func Scan(path string, verbose bool, color bool) {
 		log.Fatal(err)
 	}
 
+	var detected int
 	if fileInfo.IsDir() {
-		scanDirectory(path, verbose, color)
+		detected = scanDirectory(path, verbose, color)
 	} else {
-		scanFile(path, verbose, color)
+		detected = scanFile(path, verbose, color)
 	}
 
+	os.Exit(detected)
 }
 
 // Scan a file to detect the presence of potential Trojan Source
-func scanFile(filename string, verbose bool, color bool) {
+// return 0 if no trojan source was detected
+func scanFile(filename string, verbose bool, color bool) int {
 	/*SCAN*/
 	detected := false
 	line := 1
@@ -174,6 +178,7 @@ func scanFile(filename string, verbose bool, color bool) {
 				utils.InfoLogger.Println(lineS, ": ", msg)
 			}
 		}
+		return 1
 	} else {
 		if color {
 			result = utils.Green("ok")
@@ -182,24 +187,34 @@ func scanFile(filename string, verbose bool, color bool) {
 		}
 		utils.InfoLogger.Println("check", filename, "...", result)
 	}
+	return 0
 }
 
 // Scan recursively all the file of a repository (pathD) to detect the presence of
 //potential Trojan Source.
 // Browse the directory using filepath.Walk package => does not follow symbolic link
 // and for very large directories Walk can be inefficient
-func scanDirectory(pathD string, verbose bool, color bool) {
+// return 0 if no trojan source was detected
+func scanDirectory(pathD string, verbose bool, color bool) (result int) {
 	err := filepath.Walk(pathD, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
 			return err
 		}
 		if !info.IsDir() {
-			scanFile(path, verbose, color)
+			result += scanFile(path, verbose, color)
 		}
 		return nil
 	})
+
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	// "normalize" result
+	if result > 0 {
+		result = 1
+	}
+
+	return result
 }
