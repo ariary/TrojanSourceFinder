@@ -10,6 +10,8 @@ import (
 
 	"github.com/ariary/TrojanSourceFinder/pkg/utils"
 	confusable "github.com/skygeario/go-confusable-homoglyphs"
+	"golang.org/x/tools/godoc/util"
+	"golang.org/x/tools/godoc/vfs"
 )
 
 var (
@@ -48,7 +50,7 @@ func getEvilLine(str string, color bool) (exorcisedStr string) {
 
 // Scan file or folder to detect potential homoglyph within.
 // This function exit with status code 1 if homoglyph has been detected, 0 otherwise
-func Scan(path string, verbose bool, color bool, sibling []string) {
+func Scan(path string, verbose bool, color bool, sibling []string, onlyText bool) {
 	utils.InitLoggers()
 	// Recursive (directory) or normal scan?
 	fileInfo, err := os.Stat(path)
@@ -58,9 +60,9 @@ func Scan(path string, verbose bool, color bool, sibling []string) {
 
 	var detected int
 	if fileInfo.IsDir() {
-		detected = scanDirectory(path, verbose, color, sibling)
+		detected = scanDirectory(path, verbose, color, sibling, onlyText)
 	} else {
-		detected = scanFile(path, verbose, color, sibling)
+		detected = scanFile(path, verbose, color, sibling, onlyText)
 	}
 
 	os.Exit(detected)
@@ -68,7 +70,22 @@ func Scan(path string, verbose bool, color bool, sibling []string) {
 
 // Scan a file to detect the presence of potential Homoglyph
 // return 0 if no homoglyph has been detected within file
-func scanFile(filename string, verbose bool, color bool, scope []string) int {
+func scanFile(filename string, verbose bool, color bool, scope []string, onlyText bool) int {
+	// test if human readable text
+	if onlyText {
+		fs := vfs.OS(".")
+		if !util.IsTextFile(fs, filename) { //Not a "human readable" file so probably not surce code
+			if verbose {
+				result := "not scanned (not a text file)"
+				if color {
+					result = utils.Italic(utils.Yellow(result))
+				}
+				utils.ErrorLogger.Println("check", filename, "...", result)
+			}
+			return 1
+		}
+	}
+
 	/*SCAN*/
 	detected := false
 	line := 1
@@ -144,14 +161,14 @@ func scanFile(filename string, verbose bool, color bool, scope []string) int {
 // Scan recursively a repository to detect the presence of potential Homoglyph
 // Browse the directory using filepath.Walk package => does not follow symbolic link
 // and for very large directories Walk can be inefficient
-func scanDirectory(filename string, verbose bool, color bool, scope []string) (result int) {
+func scanDirectory(filename string, verbose bool, color bool, scope []string, onlyText bool) (result int) {
 	err := filepath.Walk(filename, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
 			return err
 		}
 		if !info.IsDir() {
-			result += scanFile(path, verbose, color, scope)
+			result += scanFile(path, verbose, color, scope, onlyText)
 		}
 		return nil
 	})

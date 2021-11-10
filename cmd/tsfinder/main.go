@@ -24,7 +24,7 @@ func main() {
 		Run: func(cmd *cobra.Command, args []string) {
 			path := args[0]
 
-			homoglyph.Scan(path, verbose, color, sibling)
+			homoglyph.Scan(path, verbose, color, sibling, onlyText)
 
 		},
 	}
