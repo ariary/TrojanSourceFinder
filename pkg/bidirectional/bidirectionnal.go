@@ -8,6 +8,9 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"golang.org/x/tools/godoc/util"
+	"golang.org/x/tools/godoc/vfs"
+
 	"github.com/ariary/TrojanSourceFinder/pkg/utils"
 )
 
@@ -101,7 +104,7 @@ func getEvilLine(str string, color bool) (exorcisedStr string) {
 
 // Scan file or folder to detect potential Trojan Source vulnerability within.
 // This function exit with status code 1 if trojan source has been detected, 0 otherwise
-func Scan(path string, verbose bool, color bool) {
+func Scan(path string, verbose bool, color bool, onlyText bool) {
 	utils.InitLoggers()
 	// Recursive (directory) or normal scan?
 	fileInfo, err := os.Stat(path)
@@ -111,9 +114,9 @@ func Scan(path string, verbose bool, color bool) {
 
 	var detected int
 	if fileInfo.IsDir() {
-		detected = scanDirectory(path, verbose, color)
+		detected = scanDirectory(path, verbose, color, onlyText)
 	} else {
-		detected = scanFile(path, verbose, color)
+		detected = scanFile(path, verbose, color, onlyText)
 	}
 
 	os.Exit(detected)
@@ -121,7 +124,22 @@ func Scan(path string, verbose bool, color bool) {
 
 // Scan a file to detect the presence of potential Trojan Source
 // return 0 if no trojan source has been detected within file
-func scanFile(filename string, verbose bool, color bool) int {
+func scanFile(filename string, verbose bool, color bool, onlyText bool) int {
+	// test if human readable text
+	if onlyText {
+		fs := vfs.OS(".")
+		if !util.IsTextFile(fs, filename) { //Not a "human readable" file so probably not surce code
+			if verbose {
+				result := "not scanned (not a text file)"
+				if color {
+					result = utils.Italic(utils.Yellow(result))
+				}
+				utils.ErrorLogger.Println("check", filename, "...", result)
+			}
+			return 1
+		}
+	}
+
 	/*SCAN*/
 	detected := false
 	line := 1
@@ -180,12 +198,14 @@ func scanFile(filename string, verbose bool, color bool) int {
 		}
 		return 1
 	} else {
-		if color {
-			result = utils.Green("ok")
-		} else {
-			result = "ok"
+		if verbose {
+			if color {
+				result = utils.Green("ok")
+			} else {
+				result = "ok"
+			}
+			utils.InfoLogger.Println("check", filename, "...", result)
 		}
-		utils.InfoLogger.Println("check", filename, "...", result)
 	}
 	return 0
 }
@@ -195,14 +215,14 @@ func scanFile(filename string, verbose bool, color bool) int {
 // Browse the directory using filepath.Walk package => does not follow symbolic link
 // and for very large directories Walk can be inefficient
 // return 0 if no trojan source was detected
-func scanDirectory(pathD string, verbose bool, color bool) (result int) {
+func scanDirectory(pathD string, verbose bool, color bool, onlyText bool) (result int) {
 	err := filepath.Walk(pathD, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
 			return err
 		}
 		if !info.IsDir() {
-			result += scanFile(path, verbose, color)
+			result += scanFile(path, verbose, color, onlyText)
 		}
 		return nil
 	})

@@ -13,6 +13,7 @@ import (
 func main() {
 	var verbose bool
 	var color bool
+	var onlyText bool
 
 	var sibling []string
 	//CMD FIND HOMOGLYPH
@@ -39,13 +40,14 @@ func main() {
 
 			name := args[0]
 
-			bidirectional.Scan(name, verbose, color)
+			bidirectional.Scan(name, verbose, color, onlyText)
 		},
 	}
 
 	//flag handling
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "make tsfinder more verbose")
 	rootCmd.PersistentFlags().BoolVarP(&color, "color", "c", false, "make tsfinder print with color")
+	rootCmd.PersistentFlags().BoolVarP(&onlyText, "text-file", "t", false, "make tsfinder scan only on 'human readable' file (ie  looks like correct UTF-8). Add verbosity (-v) to see which files has been skipped. This could help to rule out false positives")
 
 	rootCmd.AddCommand(cmdSHomoglyph)
 	rootCmd.Execute()

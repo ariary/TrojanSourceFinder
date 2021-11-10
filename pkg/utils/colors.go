@@ -22,6 +22,7 @@ var (
 	Cyan          = Color("\033[1;96m%s\033[0m")
 	Underlined    = Color("\033[4m%s\033[24m")
 	Bold          = Color("\033[1m%s\033[0m")
+	Italic        = Color("\033[3m%s\033[0m")
 	RedForeground = Color("\033[1;41m%s\033[0m")
 )
 

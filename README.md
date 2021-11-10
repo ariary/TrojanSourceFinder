@@ -78,7 +78,9 @@ tsfinder -c -v <directory>
 ```
 
 ## Demo
+
 ![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder-demo-trojansource.gif)
 
 ### Homoglyph
+
 ![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder-demo-homoglyph.gif)
