@@ -12,6 +12,7 @@ import (
 	"golang.org/x/tools/godoc/vfs"
 
 	"github.com/ariary/TrojanSourceFinder/pkg/config"
+	"github.com/ariary/TrojanSourceFinder/pkg/excludelist"
 	"github.com/ariary/TrojanSourceFinder/pkg/utils"
 )
 
@@ -113,9 +114,19 @@ func Scan(path string, cfg *config.Config) {
 		log.Fatal(err)
 	}
 
+	excludedPaths, err := excludelist.GetExcludelist(cfg.ExcludelistFilename)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Skip the given path if it is contained in the exclude list.
+	if _, ignoreEntry := (*excludedPaths)[filepath.Clean(path)]; ignoreEntry {
+		os.Exit(0)
+	}
+
 	var detected int
 	if fileInfo.IsDir() {
-		detected = scanDirectory(path, cfg)
+		detected = scanDirectory(path, cfg, excludedPaths)
 	} else {
 		detected = scanFile(path, cfg)
 	}
@@ -216,13 +227,24 @@ func scanFile(filename string, cfg *config.Config) int {
 // Browse the directory using filepath.Walk package => does not follow symbolic link
 // and for very large directories Walk can be inefficient
 // return 0 if no trojan source was detected
-func scanDirectory(pathD string, cfg *config.Config) (result int) {
-	err := filepath.Walk(pathD, func(path string, info os.FileInfo, err error) error {
+func scanDirectory(pathD string, cfg *config.Config, excludedPaths *map[string]struct{}) (result int) {
+	err := filepath.WalkDir(pathD, func(path string, dirEntry os.DirEntry, err error) error {
 		if err != nil {
 			fmt.Println(err)
 			return err
 		}
-		if !info.IsDir() {
+
+		if dirEntry.IsDir() {
+			// Skip the whole directory if it is contained in the exclude list.
+			if _, ignoreEntry := (*excludedPaths)[path]; ignoreEntry {
+				return filepath.SkipDir
+			}
+		} else {
+			// Skip the file if it is contained in the exclude list.
+			if _, ignoreEntry := (*excludedPaths)[path]; ignoreEntry {
+				return nil
+			}
+
 			result += scanFile(path, cfg)
 		}
 		return nil
