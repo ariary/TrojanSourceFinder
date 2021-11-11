@@ -91,3 +91,17 @@ tsfinder -c -v <directory>
 ### Homoglyph
 
 ![demo](https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsfinder-demo-homoglyph.gif)
+
+## Alternative
+
+As mentioned by `@ioah86` [here](https://www.reddit.com/r/cybersecurity/comments/qlh5j9/my_take_on_trojan_source/), trojan source could also been detected w/ a one liner using grep.
+
+The big difference is the output format and the exitstatus code (`tsfinder` exit with status code `0` if no Trojan source has been found, `1` otherwise; the opposite  for `grep`)
+
+Also, this one-liner does not resolve the homoglyph issue
+
+| Goal   |      `tsfinder`     |  `grep` one-liner |
+|:----------:|:-------------|:------|
+| Scan all files + show lines|  `tsfinder -v .` | `grep -arE $'(\u2066\|\u2067\|\u2068\|\u202A\|\u202B\|\u202D\|\u202E\|\u202C\|\u2069\|\u200E\|\u200F\|\u061C\|\u2066\|\u2067\|\u2068)'` |
+| Scan only on human-readable files| `tsfinder -t .` | `grep -IrE $'(\u2066\|\u2067\|\u2068\|\u202A\|\u202B\|\u202D\|\u202E\|\u202C\|\u2069\|\u200E\|\u200F\|\u061C\|\u2066\|\u2067\|\u2068)'`|
+|Exit with status code 1 if found|default|`[one-liner] && exit 1 \|\| exit 0`|
