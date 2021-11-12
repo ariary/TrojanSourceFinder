@@ -51,7 +51,7 @@ func main() {
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "make tsfinder more verbose")
 	rootCmd.PersistentFlags().BoolVarP(&color, "color", "c", false, "make tsfinder print with color")
 	rootCmd.PersistentFlags().BoolVarP(&onlyText, "text-file", "t", false, "make tsfinder scan only on 'human readable' file (ie  looks like correct UTF-8). Add verbosity (-v) to see which files has been skipped. This could help to rule out false positives")
-	rootCmd.PersistentFlags().StringVarP(&exclude, "exclude", "e", "", "specify an exclude file containing one path per line to be excluded from scanning. The paths are relative to the working directory.")
+	rootCmd.PersistentFlags().StringVarP(&exclude, "exclude", "e", "", "specifies a file containing a list of files not to be scanned. One file per line.")
 
 	rootCmd.AddCommand(cmdSHomoglyph)
 	rootCmd.Execute()
