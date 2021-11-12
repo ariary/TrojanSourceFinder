@@ -18,7 +18,7 @@
 
 *> Via `go install`*
 ```shell
-go install github.com/ariary/cmd/TrojanSourceFinder@latest
+go install github.com/ariary/TrojanSourceFinder/cmd/tsfinder@latest
 ```
 Make sure `$GOPATH` is in your `$PATH`
 
@@ -40,7 +40,7 @@ go build -o tsfinder cmd/main.go
 *> From release*
 
 ```shell
-curl -lO https://github.com/ariary/TrojanSourceFinder/releases/latest/download/tsfinder && chmod +x tsfinder
+curl -lO -L https://github.com/ariary/TrojanSourceFinder/releases/latest/download/tsfinder && chmod +x tsfinder
 ```
 
 ## Detect Trojan Source
