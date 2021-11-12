@@ -15,6 +15,7 @@ func main() {
 	var verbose bool
 	var color bool
 	var onlyText bool
+	var exclude string
 
 	var sibling []string
 	//CMD FIND HOMOGLYPH
@@ -24,7 +25,7 @@ func main() {
 		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			path := args[0]
-			cfg := &config.Config{Verbose: verbose, Color: color, Sibling: &sibling, OnlyText: onlyText}
+			cfg := &config.Config{Verbose: verbose, Color: color, Sibling: &sibling, OnlyText: onlyText, ExcludelistFilename: exclude}
 
 			homoglyph.Scan(path, cfg)
 		},
@@ -40,7 +41,7 @@ func main() {
 		Run: func(cmd *cobra.Command, args []string) {
 
 			name := args[0]
-			cfg := &config.Config{Verbose: verbose, Color: color, OnlyText: onlyText}
+			cfg := &config.Config{Verbose: verbose, Color: color, OnlyText: onlyText, ExcludelistFilename: exclude}
 
 			bidirectional.Scan(name, cfg)
 		},
@@ -50,6 +51,7 @@ func main() {
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "make tsfinder more verbose")
 	rootCmd.PersistentFlags().BoolVarP(&color, "color", "c", false, "make tsfinder print with color")
 	rootCmd.PersistentFlags().BoolVarP(&onlyText, "text-file", "t", false, "make tsfinder scan only on 'human readable' file (ie  looks like correct UTF-8). Add verbosity (-v) to see which files has been skipped. This could help to rule out false positives")
+	rootCmd.PersistentFlags().StringVarP(&exclude, "exclude", "e", "", "specify an exclude file containing one path per line to be excluded from scanning. The paths are relative to the working directory.")
 
 	rootCmd.AddCommand(cmdSHomoglyph)
 	rootCmd.Execute()
