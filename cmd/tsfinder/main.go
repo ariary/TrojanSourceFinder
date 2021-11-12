@@ -6,6 +6,7 @@ package main
 
 import (
 	"github.com/ariary/TrojanSourceFinder/pkg/bidirectional"
+	"github.com/ariary/TrojanSourceFinder/pkg/config"
 	"github.com/ariary/TrojanSourceFinder/pkg/homoglyph"
 	"github.com/spf13/cobra"
 )
@@ -23,9 +24,9 @@ func main() {
 		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			path := args[0]
+			cfg := &config.Config{Verbose: verbose, Color: color, Sibling: &sibling, OnlyText: onlyText}
 
-			homoglyph.Scan(path, verbose, color, sibling, onlyText)
-
+			homoglyph.Scan(path, cfg)
 		},
 	}
 	//flag handling
@@ -39,8 +40,9 @@ func main() {
 		Run: func(cmd *cobra.Command, args []string) {
 
 			name := args[0]
+			cfg := &config.Config{Verbose: verbose, Color: color, OnlyText: onlyText}
 
-			bidirectional.Scan(name, verbose, color, onlyText)
+			bidirectional.Scan(name, cfg)
 		},
 	}
 

@@ -9,14 +9,15 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ariary/TrojanSourceFinder/pkg/config"
 	"github.com/ariary/TrojanSourceFinder/pkg/utils"
 	"github.com/eskriett/confusables"
 	mconfusables "github.com/mtibben/confusables"
 )
 
 // Return the sibling of a specific homoglyphe found in file. Homoglyph -> Skeleton. Search for word with same skeleton.
-func getSiblings(path string, homoglyphLine string, color bool, verbose bool) {
-	if verbose {
+func getSiblings(path string, homoglyphLine string, cfg *config.Config) {
+	if cfg.Verbose {
 		utils.InfoLogger.Println("Search sibling homograph for line:", homoglyphLine)
 	}
 	// Recursive (directory) or normal scan?
@@ -26,9 +27,9 @@ func getSiblings(path string, homoglyphLine string, color bool, verbose bool) {
 	}
 
 	if fileInfo.IsDir() {
-		getSiblingsDirectory(path, homoglyphLine, color, verbose)
+		getSiblingsDirectory(path, homoglyphLine, cfg.Color, cfg.Verbose)
 	} else {
-		getSiblingsFile(path, homoglyphLine, color, verbose)
+		getSiblingsFile(path, homoglyphLine, cfg.Color, cfg.Verbose)
 	}
 }
 
