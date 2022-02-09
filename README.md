@@ -1,4 +1,7 @@
 <h1 align="center">TrojanSourceFinder</h1>
+<div align=center>
+<img src=https://github.com/ariary/TrojanSourceFinder/blob/main/img/tsf-logo.png width=250>
+</div>
 <h4 align="center">TrojanSourceFinder helps developers detect "Trojan Source" vulnerability in source code.</h4>
 <p align="center">
   Trojan Source vulnerability allows an attacker to make malicious code appear innocent.
