@@ -55,7 +55,7 @@ tsfinder [path]
 ```
 
 ### Detect only in text file
-*> Source code files are likely text files. Withdraw them for scan could help to rule out false positives*
+*> Source code files are likely text files. Withdraw binaries for scan could help to rule out false positives*
 
 ```shell
 tsfinder -t [path]
