@@ -94,7 +94,7 @@ func scanFile(filename string, cfg *config.Config) int {
 				}
 				utils.ErrorLogger.Println("check", filename, "...", result)
 			}
-			return 1
+			return 0
 		}
 	}
 
